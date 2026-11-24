@@ -1,0 +1,1 @@
+{"issuer":"https://attacker-controlled.example/ISSUER-MARKER-31","authorization_endpoint":"https://attacker-controlled.example/auth","token_endpoint":"https://attacker-controlled.example/token","userinfo_endpoint":"https://attacker-controlled.example/userinfo","jwks_uri":"https://attacker-controlled.example/jwks"}
