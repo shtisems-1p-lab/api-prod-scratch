@@ -1,0 +1,29 @@
+name: op-probe
+on:
+  push:
+  workflow_dispatch:
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Load secrets from 1Password Environment
+        id: op
+        continue-on-error: true
+        uses: 1password/load-secrets-action@v5
+        with:
+          export-env: true
+        env:
+          OP_WORKLOAD_ID: Q4423OEFCFGFZPCQZSMISRB2O4
+          OP_ENVIRONMENT_ID: kpqzp4sqzsqg5ia4kxbejdrvza
+          OP_INTEGRATION_KEY: ${{ secrets.OP_INTEGRATION_KEY }}
+      - name: Report (never prints the value)
+        run: |
+          echo "repo=$GITHUB_REPOSITORY ref=$GITHUB_REF load_step=${{ steps.op.outcome }}"
+          if [ "${PROD_DB_PASSWORD:-}" = "PRODMARK-7731" ]; then
+            echo "RESULT=SECRET_RECEIVED"
+          else
+            echo "RESULT=NO_SECRET (len=${#PROD_DB_PASSWORD})"
+          fi
